@@ -2,12 +2,12 @@ import FadeIn from "../components/FadeIn.jsx";
 import ProgressSteps from "../components/ProgressSteps.jsx";
 import RideCard from "../components/RideCard.jsx";
 import NavBtn from "../components/NavBtn.jsx";
-import { getPrice, formatPrice } from "../utils/pricing.js";
+import { getPricePerSeat, formatPrice } from "../utils/pricing.js";
 
 export default function RideTypePage({ campus, onNext, onBack }) {
   const getRides = () => {
     const campusKey = campus ? (campus.toLowerCase().includes("iperu") ? "iperu" : "main") : "main";
-    
+
     return [
       {
         id: "public",
@@ -17,7 +17,7 @@ export default function RideTypePage({ campus, onNext, onBack }) {
         badgeColor: "#64ff8c",
         badgeBg: "rgba(100,255,140,0.08)",
         badgeBorder: "rgba(100,255,140,0.2)",
-        price: formatPrice(getPrice("public", campusKey)),
+        price: formatPrice(getPricePerSeat("public", campusKey)),
         priceSub: "per seat",
         glowShadow: "0 0 0 1px rgba(100,255,140,0.13), 0 0 32px 4px rgba(100,255,140,0.18), 0 8px 32px rgba(0,0,0,0.4)",
       },
@@ -29,7 +29,7 @@ export default function RideTypePage({ campus, onNext, onBack }) {
         badgeColor: "#ffb830",
         badgeBg: "rgba(255,184,48,0.08)",
         badgeBorder: "rgba(255,184,48,0.2)",
-        price: formatPrice(getPrice("private", campusKey)),
+        price: formatPrice(getPricePerSeat("private", campusKey)),
         priceSub: "full car",
         glowShadow: "0 0 0 1px rgba(255,184,48,0.13), 0 0 32px 4px rgba(255,184,48,0.18), 0 8px 32px rgba(0,0,0,0.4)",
       },

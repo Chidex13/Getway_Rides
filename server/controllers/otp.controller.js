@@ -1,4 +1,4 @@
-import bcrypt   from "bcryptjs";
+import bcrypt from "bcryptjs";
 import { supabase } from "../services/supabase.service.js";
 import { sendOtpEmail } from "../services/email.service.js";
 
@@ -11,10 +11,10 @@ export const sendOtp = async (req, res) => {
   if (!isValidBabcockEmail(email))
     return res.status(400).json({ error: "Must be a valid @student.babcock.edu.ng email" });
 
-  const code      = Math.floor(100000 + Math.random() * 900000).toString();
-  const hash      = await bcrypt.hash(code, 10);
+  const code = Math.floor(100000 + Math.random() * 900000).toString();
+  const hash = await bcrypt.hash(code, 10);
   const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString();
-  const key       = email.trim().toLowerCase();
+  const key = email.trim().toLowerCase();
 
   // Upsert — replaces any existing OTP for this email
   const { error } = await supabase
@@ -30,7 +30,7 @@ export const sendOtp = async (req, res) => {
     await sendOtpEmail(key, code);
   } catch (err) {
     console.error("Email send error:", err);
-    return res.status(500).json({ error: "Failed to send email" });
+    return res.status(500).json({ error: "Could not send verification code. Please try again." });
   }
 
   res.json({ success: true, message: "Code sent to email" });

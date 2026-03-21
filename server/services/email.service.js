@@ -6,11 +6,11 @@ dotenv.config();
 
 // Create transporter
 const transporter = nodemailer.createTransport({
-  service: process.env.EMAIL_SERVICE,
+  service: "gmail",
   auth: {
     user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD
-  }
+    pass: process.env.EMAIL_PASS,
+  },
 });
 
 /**
@@ -23,7 +23,7 @@ export const sendOtpEmail = async (email, otp) => {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
-      subject: 'Your OTP for Gateway Rides',
+      subject: 'Your OTP for Getway Rides',
       html: htmlContent
     };
 
@@ -43,7 +43,7 @@ export const sendBookingConfirmation = async (email, bookingDetails) => {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
-      subject: 'Booking Confirmation - Gateway Rides',
+      subject: 'Booking Confirmation - Getway Rides',
       html: `<h2>Booking Confirmed</h2><p>Your booking details: ${JSON.stringify(bookingDetails)}</p>`
     };
 
@@ -63,7 +63,7 @@ export const sendCancellationEmail = async (email, bookingId) => {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
-      subject: 'Booking Cancelled - Gateway Rides',
+      subject: 'Booking Cancelled - Getway Rides',
       html: `<h2>Booking Cancelled</h2><p>Your booking ${bookingId} has been cancelled.</p>`
     };
 

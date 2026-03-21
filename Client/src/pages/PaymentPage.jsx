@@ -61,34 +61,34 @@ export default function PaymentPage({ booking, onNext, onBack }) {
   };
 
   const handleSubmit = async () => {
-    // if (!receiptFile) { setReceiptError("Please upload your payment receipt."); return; }
-    // setSubmitting(true);
-    // setSubmitError("");
-    // try {
-    //   const result = await createBooking(
-    //     {
-    //       email: booking.email,
-    //       phone: booking.phone,
-    //       rideType: booking.rideType,
-    //       tripDirection: booking.tripDir,
-    //       hostel: booking.hostel,
-    //       campus: booking.campus,
-    //       date: booking.date,
-    //       time: booking.time,
-    //       passengers: booking.passengers,
-    //       price,
-    //     },
-    //     receiptFile
-    //   );
-    //   onNext({ bookingId: result.bookingId, price });
-    // } catch (err) {
-    //   setSubmitError(err.message);
-    // } finally {
-    //   setSubmitting(false);
-    // }
+    if (!receiptFile) { setReceiptError("Please upload your payment receipt."); return; }
+    setSubmitting(true);
+    setSubmitError("");
+    try {
+      const result = await createBooking(
+        {
+          email: booking.email,
+          phone: booking.phone,
+          rideType: booking.rideType,
+          tripDirection: booking.tripDir,
+          hostel: booking.hostel,
+          campus: booking.campus,
+          date: booking.date,
+          time: booking.time,
+          passengers: booking.passengers,
+          price,
+        },
+        receiptFile
+      );
+      onNext({ bookingId: result.bookingId, price });
+    } catch (err) {
+      setSubmitError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
 
     // Bypass validation for testing
-    onNext({ bookingId: "TEST-ID123", price });
+    // onNext({ bookingId: "TEST-ID123", price });
   };
 
   return (
@@ -171,14 +171,11 @@ export default function PaymentPage({ booking, onNext, onBack }) {
               <SummaryRow label="Passengers" value={booking.passengers} />
             )}
 
-            <SummaryRow 
-              label="Price Per Seat" 
-              value={pricePerSeat ? formatPrice(pricePerSeat) : "—"} 
+            <SummaryRow
+              label="Price Per Seat"
+              value={pricePerSeat ? formatPrice(pricePerSeat) : "—"}
             />
-            <SummaryRow 
-              label="Passengers" 
-              value={booking.passengers || 1} 
-            />
+
 
             {/* Price */}
             <div style={{
@@ -241,7 +238,7 @@ export default function PaymentPage({ booking, onNext, onBack }) {
               }}>
                 Contact Driver
               </p>
-              
+
               <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                 <p style={{ fontSize: 13, color: "#fff", margin: 0 }}>
                   <span style={{ color: "#555" }}>Line 1: </span>

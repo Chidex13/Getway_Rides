@@ -81,14 +81,41 @@ export default function UserDetailsPage({ onNext, onBack }) {
     );
   }, [email, phone, attempted]);
 
-  const handleSendCode = async (e) => {
-    e.preventDefault();
-    if (!campus) {
-      setCampusError("Please select your campus");
-      return;
-    }
-    onNext({ email: email.trim(), phone: phone.trim(), campus });
+  // const handleSendCode = () => {
+  //   setAttempted(true);
+  //   const eErr = isValidBabcockEmail(email)
+  //     ? "" : "Must end with @student.babcock.edu.ng";
+  //   const pErr = isValidPhone(phone)
+  //     ? "" : "Enter a valid Nigerian number e.g. 08012345678";
+  //   const cErr = campus ? "" : "Please select your campus";
+
+  //   setEmailError(eErr);
+  //   setPhoneError(pErr);
+  //   setCampusError(cErr);
+
+  //   if (eErr || pErr || cErr) return;
+
+  //   // send(email); ← uncomment this when email service is ready
+  //   onNext({ email: email.trim(), phone: phone.trim(), campus });
+  // }
+
+  const handleSendCode = () => {
+    setAttempted(true);
+    const eErr = isValidBabcockEmail(email)
+      ? "" : "Must end with @student.babcock.edu.ng";
+    const pErr = isValidPhone(phone)
+      ? "" : "Enter a valid Nigerian number e.g. 08012345678";
+    const cErr = campus ? "" : "Please select your campus";
+
+    setEmailError(eErr);
+    setPhoneError(pErr);
+    setCampusError(cErr);
+
+    if (eErr || pErr || cErr) return;
+    send(email);
   };
+
+
 
   const handleVerify = async () => {
     if (otp.length < 6) return;
@@ -216,6 +243,17 @@ export default function UserDetailsPage({ onNext, onBack }) {
                     A 6-digit verification code will be sent to your Babcock student email.
                   </p>
                 </div>
+                {error && (
+                  <p style={{
+                    fontSize: 11,
+                    color: "#ff4d4d",
+                    fontFamily: "var(--font-mono)",
+                    textAlign: "center",
+                    marginTop: 4,
+                  }}>
+                    {error}
+                  </p>
+                )}
               </div>
             </FadeIn>
 
@@ -225,7 +263,7 @@ export default function UserDetailsPage({ onNext, onBack }) {
                 <NavBtn
                   onClick={handleSendCode}
                   variant="primary"
-                  label="Send Code →"
+                  label="Continue →"
                 />
               </div>
             </FadeIn>

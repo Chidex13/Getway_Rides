@@ -70,18 +70,18 @@ export const getOtpEmailTemplate = (otp) => {
     <body>
       <div class="container">
         <div class="header">
-          <h1>Gateway Rides</h1>
+          <h1>Getway Rides</h1>
         </div>
         <div class="content">
           <p>Hello,</p>
-          <p>Your One-Time Password (OTP) for Gateway Rides is:</p>
+          <p>Your One-Time Password (OTP) for Getway Rides is:</p>
           <div class="otp-box">${otp}</div>
           <p>This OTP will expire in 5 minutes.</p>
           <p><span class="warning">Do not share this OTP with anyone.</span></p>
           <p>If you didn't request this OTP, please ignore this email.</p>
         </div>
         <div class="footer">
-          <p>Gateway Rides © 2024. All rights reserved.</p>
+          <p>Getway Rides © 2024. All rights reserved.</p>
           <p>This is an automated email. Please do not reply.</p>
         </div>
       </div>

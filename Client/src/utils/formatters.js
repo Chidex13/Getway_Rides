@@ -14,5 +14,11 @@ export const formatTime = (timeStr) => {
   return `${display}:${m} ${ampm}`;
 };
 
-export const generateBookingId = () =>
-  "GR-" + Date.now().toString(36).toUpperCase().slice(-6);
+export const generateBookingId = () => {
+  const year = new Date().getFullYear();
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  const random = Array.from({ length: 4 }, () =>
+    chars[Math.floor(Math.random() * chars.length)]
+  ).join("");
+  return `GW-${year}-${random}`;
+};

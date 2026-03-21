@@ -38,8 +38,8 @@ export default function FinalizePage({ booking, onRestart }) {
         logging: false,
       });
       const image = canvas.toDataURL("image/png");
-      const link  = document.createElement("a");
-      link.href     = image;
+      const link = document.createElement("a");
+      link.href = image;
       link.download = `getway-receipt-${booking.bookingId}.png`;
       link.click();
     } catch (err) {
@@ -137,7 +137,7 @@ export default function FinalizePage({ booking, onRestart }) {
                 }}>
                   GETWAY RIDES
                 </p>
-                <p style={{ fontSize: 11, color: "rgba(255,255,255, 0.70)", fontWeight: 900, fontFamily: "var(--font-mono)",  }}>
+                <p style={{ fontSize: 11, color: "rgba(255,255,255, 0.70)", fontWeight: 900, fontFamily: "var(--font-mono)", }}>
                   Booking Receipt
                 </p>
               </div>
@@ -153,7 +153,7 @@ export default function FinalizePage({ booking, onRestart }) {
                     day: "numeric", month: "long", year: "numeric"
                   })}
                 </p>
-                <p style={{ 
+                <p style={{
                   fontSize: 10, color: "#555",
                   fontFamily: "var(--font-mono)", letterSpacing: "0.05em"
                 }}>
@@ -181,7 +181,7 @@ export default function FinalizePage({ booking, onRestart }) {
             {/* Trip */}
             <p style={{
               fontSize: 9, textTransform: "uppercase",
-              letterSpacing: "0.15em", color: "rgba(255,255,255,0.70)",fontWeight: 900,
+              letterSpacing: "0.15em", color: "rgba(255,255,255,0.70)", fontWeight: 900,
               fontFamily: "var(--font-mono)", margin: "20px 0 4px",
             }}>
               Trip
@@ -190,9 +190,7 @@ export default function FinalizePage({ booking, onRestart }) {
             <ReceiptRow label="Direction" value={booking.tripDir === "drop-off" ? "Campus → Airport" : "Airport → Campus"} />
             <ReceiptRow label="Date" value={booking.date ? formatDate(booking.date) : "—"} />
             <ReceiptRow label="Time" value={booking.time ? formatTime(booking.time) : "—"} />
-            {booking.rideType === "private" && (
-              <ReceiptRow label="Passengers" value={booking.passengers} />
-            )}
+            <ReceiptRow label="Passengers" value={booking.passengers} />
 
             {/* Amount */}
             <div style={{
@@ -201,7 +199,7 @@ export default function FinalizePage({ booking, onRestart }) {
               borderTop: "1px solid rgba(255,255,255,0.08)",
             }}>
               <span style={{
-                fontSize: 11, color: "rgba(255,255,255, 0.70)",fontWeight: 900,
+                fontSize: 11, color: "rgba(255,255,255, 0.70)", fontWeight: 900,
                 fontFamily: "var(--font-mono)",
                 textTransform: "uppercase", letterSpacing: "0.08em",
               }}>
@@ -232,24 +230,32 @@ export default function FinalizePage({ booking, onRestart }) {
 
               <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <span style={{ fontSize: 11, color: "#555", 
-                    fontFamily: "var(--font-mono)" }}>
+                  <span style={{
+                    fontSize: 11, color: "#555",
+                    fontFamily: "var(--font-mono)"
+                  }}>
                     Line 1
                   </span>
-                  <span style={{ fontSize: 12, fontWeight: 600, 
+                  <span style={{
+                    fontSize: 12, fontWeight: 600,
                     color: "#fff", fontFamily: "var(--font-mono)",
-                    letterSpacing: "0.05em" }}>
+                    letterSpacing: "0.05em"
+                  }}>
                     07019624022
                   </span>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <span style={{ fontSize: 11, color: "#555", 
-                    fontFamily: "var(--font-mono)" }}>
+                  <span style={{
+                    fontSize: 11, color: "#555",
+                    fontFamily: "var(--font-mono)"
+                  }}>
                     Line 2
                   </span>
-                  <span style={{ fontSize: 12, fontWeight: 600, 
+                  <span style={{
+                    fontSize: 12, fontWeight: 600,
                     color: "#fff", fontFamily: "var(--font-mono)",
-                    letterSpacing: "0.05em" }}>
+                    letterSpacing: "0.05em"
+                  }}>
                     0704 774 9171
                   </span>
                 </div>
@@ -260,7 +266,7 @@ export default function FinalizePage({ booking, onRestart }) {
                 fontFamily: "var(--font-mono)", marginTop: 10,
                 lineHeight: 1.5,
               }}>
-                Contact us if your driver has not arrived within 
+                Contact us if your driver has not arrived within
                 40 minutes of your selected time.
               </p>
             </div>
@@ -276,7 +282,7 @@ export default function FinalizePage({ booking, onRestart }) {
             padding: "0 8px",
             marginBottom: 4,
           }}>
-            ⚠ Your booking is pending driver confirmation. 
+            ⚠ Your booking is pending driver confirmation.
             You will be contacted if there are any issues.
           </p>
         </FadeIn>
