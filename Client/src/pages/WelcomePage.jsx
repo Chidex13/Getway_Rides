@@ -14,7 +14,7 @@ export default function WelcomePage({ onNext }) {
   useEffect(() => {
     getBookingStatus()
       .then((data) => setBookingOpen(data.isOpen))
-      .catch(() => setBookingOpen(true)) // fail open if unreachable
+      .catch(() => setBookingOpen(false)) // fail open if unreachable
       .finally(() => setStatusLoading(false));
   }, []);
 
