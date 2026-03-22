@@ -95,3 +95,16 @@ export const getBooking = async (req, res) => {
 
   res.json(data);
 };
+
+export const getBookingStatus = async (req, res) => {
+  const { data, error } = await supabase
+    .from("booking_status")
+    .select("is_open")
+    .eq("id", 1)
+    .single();
+
+  if (error || !data)
+    return res.status(500).json({ error: "Could not fetch booking status" });
+
+  res.json({ isOpen: data.is_open });
+};

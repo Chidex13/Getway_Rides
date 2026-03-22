@@ -59,3 +59,22 @@ export const updateBookingStatus = async (req, res) => {
 
   res.json({ success: true, booking: data });
 };
+
+export const toggleBookingStatus = async (req, res) => {
+  const { isOpen } = req.body;
+
+  if (typeof isOpen !== "boolean")
+    return res.status(400).json({ error: "isOpen must be true or false" });
+
+  const { data, error } = await supabase
+    .from("booking_status")
+    .update({ is_open: isOpen, updated_at: new Date().toISOString() })
+    .eq("id", 1)
+    .select()
+    .single();
+
+  if (error || !data)
+    return res.status(500).json({ error: "Could not update booking status" });
+
+  res.json({ success: true, isOpen: data.is_open });
+};

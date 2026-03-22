@@ -1,5 +1,8 @@
 const BASE_URL = import.meta.env.VITE_API_URL ?? "http://localhost:5000";
 
+export const getBookingStatus = () => 
+  request("GET", "/api/bookings/status");
+
 async function request(method, path, body, isFormData = false) {
   const options = {
     method,

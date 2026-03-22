@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllBookings, updateBookingStatus, login } from "../controllers/admin.controller.js";
+import { getAllBookings, updateBookingStatus, login, toggleBookingStatus } from "../controllers/admin.controller.js";
 import { requireAdmin } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
@@ -12,5 +12,7 @@ router.get("/bookings", requireAdmin, getAllBookings);
 
 // PATCH /api/admin/bookings/:id
 router.patch("/bookings/:id", requireAdmin, updateBookingStatus);
+
+router.patch("/booking-status", requireAdmin, toggleBookingStatus);
 
 export default router;

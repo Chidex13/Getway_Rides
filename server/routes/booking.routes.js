@@ -1,9 +1,11 @@
 import express from "express";
 import multer  from "multer";
-import { createBooking, getBooking } from "../controllers/booking.controller.js";
+import { createBooking, getBooking, getBookingStatus } from "../controllers/booking.controller.js";
+
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
+router.get("/status", getBookingStatus);
 
 // POST /api/bookings  — multipart with optional receipt file
 router.post("/", upload.single("receipt"), createBooking);

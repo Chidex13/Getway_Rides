@@ -1,9 +1,27 @@
-import { useState } from "react";
 import FadeIn from "../components/FadeIn.jsx";
-import LiveBadge from "../components/LiveBadge.jsx";
+
+import { useState, useEffect } from "react";
+import { getBookingStatus } from "../utils/api.js";
+
+// inside the component add:
 
 export default function WelcomePage({ onNext }) {
   const [hovered, setHovered] = useState(false);
+  const [bookingOpen, setBookingOpen] = useState(true);
+  const [statusLoading, setStatusLoading] = useState(true);
+  const [dot, setDot] = useState(true);
+
+  useEffect(() => {
+    getBookingStatus()
+      .then((data) => setBookingOpen(data.isOpen))
+      .catch(() => setBookingOpen(true)) // fail open if unreachable
+      .finally(() => setStatusLoading(false));
+  }, []);
+
+  useEffect(() => {
+    const i = setInterval(() => setDot((d) => !d), 1200);
+    return () => clearInterval(i);
+  }, []);
 
   return (
     <div style={{
@@ -74,9 +92,35 @@ export default function WelcomePage({ onNext }) {
         width: "100%",
       }}>
 
-        <FadeIn delay={100} style={{ marginBottom: 16, display: "flex", justifyContent: "center" }}>
-          <LiveBadge />
-        </FadeIn>
+      <div style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 6,
+        borderRadius: 9999,
+        padding: "8px 16px",
+        fontSize: 12,
+
+        textTransform: "uppercase",
+        letterSpacing: "0.12em",
+        fontFamily: "var(--font-mono)",
+        background: bookingOpen ? "rgba(100,255,140,0.08)" : "rgba(255,77,77,0.08)",
+        border: `1px solid ${bookingOpen ? "rgba(100,255,140,0.2)" : "rgba(255,77,77,0.2)"}`,
+        color: bookingOpen ? "#64ff8c" : "#ff4d4d",
+        lineHeight: 1,
+        whiteSpace: "nowrap",
+        marginBottom: 16,
+        }}>
+        <span style={{
+          display: "inline-block",
+          width: 8, height: 8,
+          borderRadius: "50%",
+          background: bookingOpen ? "#64ff8c" : "#ff4d4d",
+          flexShrink: 0,
+          opacity: bookingOpen ? (dot ? 1 : 0.15) : 1,
+          transition: "opacity 0.4s",
+        }} />
+        {statusLoading ? "Checking..." : bookingOpen ? "Booking Open" : "Booking Closed"}
+      </div>
 
         <FadeIn delay={200} style={{ display: "flex", justifyContent: "center" }}>
           <p style={{
@@ -122,9 +166,10 @@ export default function WelcomePage({ onNext }) {
 
         <FadeIn delay={540}>
           <button
-            onMouseEnter={() => setHovered(true)}
+            onMouseEnter={() => bookingOpen && setHovered(true)}
             onMouseLeave={() => setHovered(false)}
-            onClick={onNext}
+            onClick={() => bookingOpen && onNext()}
+            disabled={!bookingOpen || statusLoading}
             className="t-glow"
             style={{
               display: "inline-flex",
@@ -145,9 +190,11 @@ export default function WelcomePage({ onNext }) {
                 ? "0 0 18px 2px rgba(100,255,140,0.25), 0 0 48px 8px rgba(100,255,140,0.12)"
                 : "none",
               transform: hovered ? "translateY(-2px)" : "translateY(0)",
+              opacity: bookingOpen ? 1 : 0.4,
+              cursor: bookingOpen ? "pointer" : "not-allowed",
             }}
-          >
-            Book a Ride →
+            >
+            {bookingOpen ? "Book a Ride →" : "Bookings Closed"}
           </button>
         </FadeIn>
 
