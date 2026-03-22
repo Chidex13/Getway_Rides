@@ -7,14 +7,14 @@ import { getBookingStatus } from "../utils/api.js";
 
 export default function WelcomePage({ onNext }) {
   const [hovered, setHovered] = useState(false);
-  const [bookingOpen, setBookingOpen] = useState(true);
+  const [bookingOpen, setBookingOpen] = useState();
   const [statusLoading, setStatusLoading] = useState(true);
   const [dot, setDot] = useState(true);
 
   useEffect(() => {
     getBookingStatus()
       .then((data) => setBookingOpen(data.isOpen))
-      .catch(() => setBookingOpen(true)) // fail open if unreachable
+      .catch(() => setBookingOpen(false)) // fail open if unreachable
       .finally(() => setStatusLoading(false));
   }, []);
 
