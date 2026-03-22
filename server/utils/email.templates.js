@@ -184,10 +184,10 @@ export const getBookingConfirmationTemplate = (bookingDetails) => {
             </div>
           </div>
           <div class="amount">Amount: ${amount}</div>
-          <p>Thank you for booking with Gateway Rides!</p>
+          <p>Thank you for booking with Getway Rides!</p>
         </div>
         <div class="footer">
-          <p>Gateway Rides © 2024. All rights reserved.</p>
+          <p>Getway Rides © 2024. All rights reserved.</p>
         </div>
       </div>
     </body>
