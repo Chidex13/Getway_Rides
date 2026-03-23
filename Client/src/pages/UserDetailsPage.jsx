@@ -263,7 +263,8 @@ export default function UserDetailsPage({ onNext, onBack }) {
                 <NavBtn
                   onClick={handleSendCode}
                   variant="primary"
-                  label="Continue →"
+                  label={sending ? "Sending..." : "Continue →"}
+                  disabled={sending}
                 />
               </div>
             </FadeIn>
