@@ -27,10 +27,10 @@ export const sendOtpEmail = async (email, otp) => {
 
     console.log(`OTP sent to ${email}`);
   } catch (error) {
-    console.error("Email error:", error);
-    throw new Error("Failed to send verification email");
-  }
-};
+    console.error("FULL EMAIL ERROR:", error);
+    throw error; // 👈 temporarily throw the real error
+    }
+  };
 
 export const sendBookingConfirmation = async (email, bookingDetails) => {
   try {
