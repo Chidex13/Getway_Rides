@@ -1,57 +1,69 @@
-import nodemailer from "nodemailer";
+import SibApiV3Sdk from "sib-api-v3-sdk";
 import { getOtpEmailTemplate } from "../utils/email.templates.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-const transporter = nodemailer.createTransport({
-  host: "smtp-relay.brevo.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+const client = SibApiV3Sdk.ApiClient.instance;
+const apiKey = client.authentications["api-key"];
+apiKey.apiKey = process.env.BREVO_API_KEY;
 
+const tranEmailApi = new SibApiV3Sdk.TransactionalEmailsApi();
+
+// ✅ OTP EMAIL
 export const sendOtpEmail = async (email, otp) => {
   try {
-    await transporter.sendMail({
-      from: `"Getway Rides" <${process.env.EMAIL_USER}>`,
-      to: email,
+    await tranEmailApi.sendTransacEmail({
+      sender: {
+        email: process.env.EMAIL_USER,
+        name: "Getway Rides",
+      },
+      to: [{ email }],
       subject: "Your Getway Rides verification code",
-      html: getOtpEmailTemplate(otp),
+      htmlContent: getOtpEmailTemplate(otp),
     });
+
     console.log(`OTP sent to ${email}`);
   } catch (error) {
-    console.error("Email send error:", error);
+    console.error("Brevo OTP error:", error);
     throw new Error("Failed to send verification email");
   }
 };
 
+// ✅ BOOKING CONFIRMATION
 export const sendBookingConfirmation = async (email, bookingDetails) => {
   try {
-    await transporter.sendMail({
-      from: `"Getway Rides" <${process.env.EMAIL_USER}>`,
-      to: email,
+    await tranEmailApi.sendTransacEmail({
+      sender: {
+        email: process.env.EMAIL_USER,
+        name: "Getway Rides",
+      },
+      to: [{ email }],
       subject: "Booking Confirmed — Getway Rides",
-      html: `<h2>Booking Confirmed</h2>
-             <p>Booking ref: ${bookingDetails.bookingRef}</p>
-             <p>Amount: ₦${bookingDetails.price}</p>`,
+      htmlContent: `
+        <h2>Booking Confirmed</h2>
+        <p>Booking ref: ${bookingDetails.bookingRef}</p>
+        <p>Amount: ₦${bookingDetails.price}</p>
+      `,
     });
+
     console.log(`Booking confirmation sent to ${email}`);
   } catch (error) {
-    console.error("Booking email error:", error);
+    console.error("Brevo booking error:", error);
     throw new Error("Failed to send confirmation email");
   }
 };
 
+// ✅ CANCELLATION EMAIL
 export const sendCancellationEmail = async (email, bookingId) => {
   try {
-    await transporter.sendMail({
-      from: `"Getway Rides" <${process.env.EMAIL_USER}>`,
-      to: email,
+    await tranEmailApi.sendTransacEmail({
+      sender: {
+        email: process.env.EMAIL_USER,
+        name: "Getway Rides",
+      },
+      to: [{ email }],
       subject: "Booking Cancelled — Getway Rides",
-      html: `
+      htmlContent: `
         <h2>Booking Cancelled</h2>
         <p>Your booking <strong>${bookingId}</strong> has been cancelled.</p>
         <p>For questions contact us:</p>
@@ -60,9 +72,10 @@ export const sendCancellationEmail = async (email, bookingId) => {
         <p>We apologise for any inconvenience.</p>
       `,
     });
+
     console.log(`Cancellation email sent to ${email}`);
   } catch (error) {
-    console.error("Cancellation email error:", error);
+    console.error("Brevo cancellation error:", error);
     throw new Error("Failed to send cancellation email");
   }
 };
