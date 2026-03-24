@@ -15,7 +15,7 @@ export const sendOtpEmail = async (email, otp) => {
     await tranEmailApi.sendTransacEmail({
       sender: {
         email: process.env.EMAIL_USER,
-        name: "Getway Rides",
+        name: "Getway-Rides",
       },
       to: [{ email }],
       subject: "Your Getway Rides verification code",
