@@ -24,9 +24,9 @@ export const sendOtpEmail = async (email, otp) => {
 
     console.log(`OTP sent to ${email}`);
   } catch (error) {
-    console.error("Brevo OTP error:", error);
-    throw new Error("Failed to send verification email");
-  }
+  console.error("FULL BREVO ERROR:", JSON.stringify(error, null, 2));
+  throw error;
+}
 };
 
 // ✅ BOOKING CONFIRMATION
