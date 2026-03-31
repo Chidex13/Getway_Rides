@@ -67,7 +67,7 @@ export default function PaymentPage({ booking, onNext, onBack }) {
     try {
       const result = await createBooking(
         {
-          email: booking.email,
+          fullName: booking.fullName,
           phone: booking.phone,
           rideType: booking.rideType,
           tripDirection: booking.tripDir,
@@ -243,7 +243,7 @@ export default function PaymentPage({ booking, onNext, onBack }) {
                 <p style={{ fontSize: 13, color: "#fff", margin: 0 }}>
                   <span style={{ color: "#555" }}>Line 1: </span>
                   <span style={{ fontFamily: "var(--font-mono)", letterSpacing: 2 }}>
-                    07019624022
+                    0701 9624 022
                   </span>
                 </p>
                 <p style={{ fontSize: 13, color: "#fff", margin: 0 }}>

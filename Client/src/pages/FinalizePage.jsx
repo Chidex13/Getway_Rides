@@ -173,10 +173,10 @@ export default function FinalizePage({ booking, onRestart }) {
             }}>
               Passenger
             </p>
-            <ReceiptRow label="Email" value={booking.email} />
+            <ReceiptRow label="Full Name" value={booking.fullName} />
             <ReceiptRow label="Phone" value={booking.phone} />
             <ReceiptRow label="Hostel" value={booking.hostel} />
-            <ReceiptRow label="Campus" value={booking.campus === "main" ? "Main Campus" : "Iperu Campus"} />
+            <ReceiptRow label="Campus" value={booking.campus === "main" ? "Main Campus" : booking.campus === "iperu" ? "Iperu Campus" : "Off Campus"} />
 
             {/* Trip */}
             <p style={{

@@ -14,31 +14,39 @@ export const validateBooking = (req, res, next) => {
 };
 
 /**
- * Validate email format
+ * Validate full name format
  */
-export const validateEmail = (req, res, next) => {
-  const { email } = req.body;
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+export const validateFullName = (req, res, next) => {
+  const { fullName } = req.body;
+  
+  if (!fullName) {
+    return res.status(400).json({ error: 'Full name is required' });
+  }
 
-  if (!email || !emailRegex.test(email)) {
-    return res.status(400).json({ error: 'Invalid email format' });
+  const trimmed = fullName.trim();
+  if (trimmed.length <= 6) {
+    return res.status(400).json({ error: 'Full name must be greater than 6 characters' });
+  }
+
+  if (!/^[a-zA-Z\s]+$/.test(trimmed)) {
+    return res.status(400).json({ error: 'Full name must contain only letters and spaces' });
   }
 
   next();
 };
 
 /**
- * Validate OTP
+ * Validate phone format
  */
-export const validateOtp = (req, res, next) => {
-  const { email, otp } = req.body;
-
-  if (!email || !otp) {
-    return res.status(400).json({ error: 'Email and OTP are required' });
+export const validatePhone = (req, res, next) => {
+  const { phone } = req.body;
+  
+  if (!phone) {
+    return res.status(400).json({ error: 'Phone number is required' });
   }
 
-  if (otp.length !== parseInt(process.env.OTP_LENGTH || 6)) {
-    return res.status(400).json({ error: 'Invalid OTP length' });
+  if (!/^(\+234|0)[789][01]\d{8}$/.test(phone.trim())) {
+    return res.status(400).json({ error: 'Invalid phone number format' });
   }
 
   next();

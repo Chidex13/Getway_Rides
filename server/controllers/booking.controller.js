@@ -10,31 +10,34 @@ const generateBookingId = () => {
   return `GW-${year}-${random}`;
 };
 
-const isValidBabcockEmail = (e) =>
-  /^[a-zA-Z0-9._%+\-]+@student\.babcock\.edu\.ng$/.test(e?.trim() ?? "");
+const isValidFullName = (fullName) => {
+  const trimmed = fullName?.trim() ?? "";
+  if (trimmed.length <= 6) return false;
+  return /^[a-zA-Z\s]+$/.test(trimmed);
+};
 
 const isValidPhone = (p) =>
   /^(\+234|0)[789][01]\d{8}$/.test(p?.trim() ?? "");
 
 const PRICES = {
-  public: { main: 13000, iperu: 10000 },
-  private: { main: 18000, iperu: 15000 },
+  public: { main: 13000, iperu: 10000, "off-campus": 13000 },
+  private: { main: 18000, iperu: 15000, "off-campus": 18000 },
 };
 
 export const createBooking = async (req, res) => {
   const {
-    email, phone, rideType, tripDirection,
+    fullName, phone, rideType, tripDirection,
     hostel, campus, date, time, passengers,
   } = req.body;
 
   // Validate required fields
-  const missing = ["email", "phone", "rideType", "tripDirection", "hostel", "campus", "date", "time"]
+  const missing = ["fullName", "phone", "rideType", "tripDirection", "hostel", "campus", "date", "time"]
     .filter((f) => !req.body[f]);
   if (missing.length)
     return res.status(400).json({ error: `Missing fields: ${missing.join(", ")}` });
 
-  if (!isValidBabcockEmail(email))
-    return res.status(400).json({ error: "Invalid student email" });
+  if (!isValidFullName(fullName))
+    return res.status(400).json({ error: "Invalid full name. Must be greater than 6 characters and contain only letters." });
 
   if (!isValidPhone(phone))
     return res.status(400).json({ error: "Invalid phone number" });
@@ -48,7 +51,7 @@ export const createBooking = async (req, res) => {
   let receiptUrl = null;
   if (req.file) {
     try {
-      receiptUrl = await uploadReceipt(req.file, email);
+      receiptUrl = await uploadReceipt(req.file, fullName);
     } catch (err) {
       console.error("Receipt upload error:", err);
       return res.status(500).json({ error: "Error please try again." });
@@ -58,7 +61,7 @@ export const createBooking = async (req, res) => {
   const { data, error } = await supabase
     .from("bookings")
     .insert({
-      email: email.trim().toLowerCase(),
+      full_name: fullName.trim(),
       phone: phone.trim(),
       ride_type: rideType,
       trip_direction: tripDirection,

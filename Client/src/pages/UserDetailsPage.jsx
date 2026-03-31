@@ -3,132 +3,48 @@ import FadeIn from "../components/FadeIn.jsx";
 import ProgressSteps from "../components/ProgressSteps.jsx";
 import Field from "../components/Field.jsx";
 import CustomSelect from "../components/CustomSelect.jsx";
-import OtpInput from "../components/OtpInput.jsx";
 import NavBtn from "../components/NavBtn.jsx";
-import { useOtp } from "../hooks/useOtp.js";
-import { isValidBabcockEmail, isValidPhone } from "../utils/validators.js";
+import { isValidFullName, isValidPhone } from "../utils/validators.js";
 import { CAMPUSES } from "../constants/campuses.js";
-
-function ResendTimer({ onResend, sending }) {
-  const [seconds, setSeconds] = useState(60);
-  const [canResend, setCanResend] = useState(false);
-
-  useEffect(() => {
-    setSeconds(60);
-    setCanResend(false);
-    const interval = setInterval(() => {
-      setSeconds((s) => {
-        if (s <= 1) { clearInterval(interval); setCanResend(true); return 0; }
-        return s - 1;
-      });
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div style={{ textAlign: "center" }}>
-      {canResend ? (
-        <button
-          onClick={onResend}
-          disabled={sending}
-          style={{
-            background: "none",
-            border: "none",
-            color: sending ? "#444" : "#64ff8c",
-            fontSize: 12,
-            fontFamily: "var(--font-mono)",
-            cursor: sending ? "not-allowed" : "pointer",
-            textDecoration: "underline",
-            padding: 0,
-          }}
-        >
-          {sending ? "Sending..." : "Resend code"}
-        </button>
-      ) : (
-        <p style={{ fontSize: 12, color: "#444", fontFamily: "var(--font-mono)" }}>
-          Resend code in <span style={{ color: "#64ff8c" }}>{seconds}s</span>
-        </p>
-      )}
-    </div>
-  );
-}
-
 
 
 export default function UserDetailsPage({ onNext, onBack }) {
-  const [email, setEmail] = useState("");
+  const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [campus, setCampus] = useState("");
-  const [emailError, setEmailError] = useState("");
+  const [fullNameError, setFullNameError] = useState("");
   const [phoneError, setPhoneError] = useState("");
   const [campusError, setCampusError] = useState("");
   const [attempted, setAttempted] = useState(false);
-  const [otp, setOtp] = useState("");
-  const [resendKey, setResendKey] = useState(0);
 
-  const { stage, error, sending, verifying, send, verify, reset } = useOtp();
-
-  const canSend = isValidBabcockEmail(email) && isValidPhone(phone) && campus;
+  const canContinue = isValidFullName(fullName) && isValidPhone(phone) && campus;
 
   /* Live validation after first attempt */
   useEffect(() => {
     if (!attempted) return;
-    setEmailError(
-      isValidBabcockEmail(email) ? "" : "Must end with @student.babcock.edu.ng"
+    setFullNameError(
+      isValidFullName(fullName) ? "" : "Must be greater than 6 characters and contain only letters"
     );
     setPhoneError(
       isValidPhone(phone) ? "" : "Enter a valid Nigerian number — e.g. 08012345678"
     );
-  }, [email, phone, attempted]);
+  }, [fullName, phone, attempted]);
 
-  // const handleSendCode = () => {
-  //   setAttempted(true);
-  //   const eErr = isValidBabcockEmail(email)
-  //     ? "" : "Must end with @student.babcock.edu.ng";
-  //   const pErr = isValidPhone(phone)
-  //     ? "" : "Enter a valid Nigerian number e.g. 08012345678";
-  //   const cErr = campus ? "" : "Please select your campus";
-
-  //   setEmailError(eErr);
-  //   setPhoneError(pErr);
-  //   setCampusError(cErr);
-
-  //   if (eErr || pErr || cErr) return;
-
-  //   // send(email); ← uncomment this when email service is ready
-  //   onNext({ email: email.trim(), phone: phone.trim(), campus });
-  // }
-
-  const handleSendCode = () => {
+  const handleContinue = () => {
     setAttempted(true);
-    const eErr = isValidBabcockEmail(email)
-      ? "" : "Must end with @student.babcock.edu.ng";
+    const fErr = isValidFullName(fullName)
+      ? "" : "Must be greater than 6 characters and contain only letters";
     const pErr = isValidPhone(phone)
       ? "" : "Enter a valid Nigerian number e.g. 08012345678";
     const cErr = campus ? "" : "Please select your campus";
 
-    setEmailError(eErr);
+    setFullNameError(fErr);
     setPhoneError(pErr);
     setCampusError(cErr);
 
-    if (eErr || pErr || cErr) return;
-    send(email);
-  };
+    if (fErr || pErr || cErr) return;
 
-
-
-  const handleVerify = async () => {
-    if (otp.length < 6) return;
-    const ok = await verify(email, otp);
-    if (ok) {
-      setTimeout(() => onNext({ email: email.trim(), phone: phone.trim(), campus }), 900);
-    }
-  };
-
-  const handleResend = () => {
-    setOtp("");
-    setResendKey((k) => k + 1);
-    send(email);
+    onNext({ fullName: fullName.trim(), phone: phone.trim(), campus });
   };
 
   const pageStyle = {
@@ -175,189 +91,85 @@ export default function UserDetailsPage({ onNext, onBack }) {
           <ProgressSteps current={0} total={5} />
         </FadeIn>
 
-        {/* ── STAGE: FORM ── */}
-        {stage === "idle" && (
-          <>
-            <FadeIn delay={140}>
-              <h2 style={{
-                fontFamily: "var(--font-bebas)",
-                fontSize: "clamp(36px, 6vw, 52px)",
-                letterSpacing: 3, color: "#fff",
-                textAlign: "center", marginBottom: 6,
-              }}>
-                Your Details
-              </h2>
-              <p style={{
-                textAlign: "center", color: "#555", fontSize: 13,
-                maxWidth: 340, margin: "0 auto 32px",
-              }}>
-                Enter your student email and we'll send a verification code.
+        <FadeIn delay={140}>
+          <h2 style={{
+            fontFamily: "var(--font-bebas)",
+            fontSize: "clamp(36px, 6vw, 52px)",
+            letterSpacing: 3, color: "#fff",
+            textAlign: "center", marginBottom: 6,
+          }}>
+            Your Details
+          </h2>
+          <p style={{
+            textAlign: "center", color: "#555", fontSize: 13,
+            maxWidth: 340, margin: "0 auto 32px",
+          }}>
+            Enter your full name, phone number, and select your campus.
+          </p>
+        </FadeIn>
+
+        <FadeIn delay={240} style={{ width: "100%" }}>
+          <div style={{
+            background: "#111",
+            border: "1.5px solid rgba(255,255,255,0.07)",
+            borderRadius: 16, padding: 28,
+            display: "flex", flexDirection: "column", gap: 20,
+          }}>
+            <Field
+              label="Full Name"
+              hint="Letters only"
+              type="text"
+              value={fullName}
+              onChange={setFullName}
+              error={fullNameError}
+              placeholder="John Doe Smith"
+              maxLength={50}
+            />
+            <Field
+              label="Phone Number"
+              hint="WhatsApp number"
+              type="tel"
+              value={phone}
+              onChange={setPhone}
+              error={phoneError}
+              placeholder="08012345678"
+              maxLength={11}
+            />
+            <CustomSelect
+              label="Campus"
+              value={campus}
+              onChange={(v) => { setCampus(v); setCampusError(""); }}
+              options={CAMPUSES}
+              placeholder="Select your campus"
+              error={campusError}
+            />
+
+            <div style={{
+              display: "flex", alignItems: "flex-start", gap: 10,
+              padding: "11px 14px",
+              background: "rgba(100,255,140,0.04)",
+              border: "1px solid rgba(100,255,140,0.1)",
+              borderRadius: 8,
+            }}>
+              <span style={{ color: "#64ff8c", fontSize: 13, marginTop: 1, flexShrink: 0 }}>ℹ</span>
+              <p style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", lineHeight: 1.6 }}>
+                Please ensure your full name is correct and your phone number is valid.
               </p>
-            </FadeIn>
+            </div>
+          </div>
+        </FadeIn>
 
-            <FadeIn delay={240} style={{ width: "100%" }}>
-              <div style={{
-                background: "#111",
-                border: "1.5px solid rgba(255,255,255,0.07)",
-                borderRadius: 16, padding: 28,
-                display: "flex", flexDirection: "column", gap: 20,
-              }}>
-                <Field
-                  label="Student Email"
-                  hint="@student.babcock.edu.ng"
-                  type="email"
-                  value={email}
-                  onChange={setEmail}
-                  error={emailError}
-                  placeholder="yourname@student.babcock.edu.ng"
-                  disabled={sending}
-                />
-                <Field
-                  label="Phone Number"
-                  hint="Nigerian number"
-                  type="tel"
-                  value={phone}
-                  onChange={setPhone}
-                  error={phoneError}
-                  placeholder="08012345678"
-                  disabled={sending}
-                />
-                <CustomSelect
-                  label="Campus"
-                  value={campus}
-                  onChange={(v) => { setCampus(v); setCampusError(""); }}
-                  options={CAMPUSES}
-                  placeholder="Select your campus"
-                  error={campusError}
-                />
-
-                <div style={{
-                  display: "flex", alignItems: "flex-start", gap: 10,
-                  padding: "11px 14px",
-                  background: "rgba(100,255,140,0.04)",
-                  border: "1px solid rgba(100,255,140,0.1)",
-                  borderRadius: 8,
-                }}>
-                  <span style={{ color: "#64ff8c", fontSize: 13, marginTop: 1, flexShrink: 0 }}>ℹ</span>
-                  <p style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", lineHeight: 1.6 }}>
-                    A 6-digit verification code will be sent to your Babcock student email.
-                  </p>
-                </div>
-                {error && (
-                  <p style={{
-                    fontSize: 11,
-                    color: "#ff4d4d",
-                    fontFamily: "var(--font-mono)",
-                    textAlign: "center",
-                    marginTop: 4,
-                  }}>
-                    {error}
-                  </p>
-                )}
-              </div>
-            </FadeIn>
-
-            <FadeIn delay={340} style={{ width: "100%", marginTop: 16 }}>
-              <div style={{ display: "flex", gap: 12 }}>
-                <NavBtn onClick={onBack} variant="ghost" label="← Back" />
-                <NavBtn
-                  onClick={handleSendCode}
-                  variant="primary"
-                  label={sending ? "Sending..." : "Continue →"}
-                  disabled={sending}
-                />
-              </div>
-            </FadeIn>
-          </>
-        )}
-
-        {/* ── STAGE: OTP ── */}
-        {(stage === "sent" || stage === "verified") && (
-          <>
-            <FadeIn delay={100}>
-              <h2 style={{
-                fontFamily: "var(--font-bebas)",
-                fontSize: "clamp(32px, 6vw, 48px)",
-                letterSpacing: 3, color: "#fff",
-                textAlign: "center", marginBottom: 6,
-              }}>
-                Check Your Email
-              </h2>
-              <p style={{
-                textAlign: "center", fontSize: 13, color: "#555",
-                maxWidth: 340, margin: "0 auto 32px",
-              }}>
-                We sent a 6-digit code to{" "}
-                <span style={{ color: "rgba(255,255,255,0.6)" }}>{email}</span>
-              </p>
-            </FadeIn>
-
-            <FadeIn delay={200} style={{ width: "100%" }}>
-              <div style={{
-                background: "#111",
-                border: `1.5px solid ${stage === "verified" ? "rgba(100,255,140,0.3)" : "rgba(255,255,255,0.07)"}`,
-                borderRadius: 16, padding: 28,
-                display: "flex", flexDirection: "column", gap: 24,
-                transition: "border-color 0.4s ease",
-              }}>
-                {stage === "verified" ? (
-                  <div style={{
-                    display: "flex", flexDirection: "column",
-                    alignItems: "center", gap: 12, padding: "8px 0",
-                  }}>
-                    <div style={{
-                      width: 52, height: 52, borderRadius: "50%",
-                      background: "rgba(100,255,140,0.12)",
-                      border: "2px solid rgba(100,255,140,0.4)",
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      fontSize: 22, color: "#64ff8c",
-                    }}>
-                      ✓
-                    </div>
-                    <p style={{ fontSize: 14, color: "#64ff8c", fontFamily: "var(--font-mono)" }}>
-                      Email verified!
-                    </p>
-                    <p style={{ fontSize: 12, color: "#555" }}>
-                      Taking you to the next step...
-                    </p>
-                  </div>
-                ) : (
-                  <>
-                    <OtpInput
-                      value={otp}
-                      onChange={setOtp}
-                      disabled={verifying}
-                      error={error}
-                    />
-                    <ResendTimer
-                      key={resendKey}
-                      onResend={handleResend}
-                      sending={sending}
-                    />
-                  </>
-                )}
-              </div>
-            </FadeIn>
-
-            {stage !== "verified" && (
-              <FadeIn delay={300} style={{ width: "100%", marginTop: 16 }}>
-                <div style={{ display: "flex", gap: 12 }}>
-                  <NavBtn
-                    onClick={() => { reset(); setOtp(""); }}
-                    variant="ghost"
-                    label="← Change Email"
-                  />
-                  <NavBtn
-                    onClick={handleVerify}
-                    variant="primary"
-                    label={verifying ? "Verifying..." : "Verify →"}
-                    disabled={verifying || otp.length < 6}
-                  />
-                </div>
-              </FadeIn>
-            )}
-          </>
-        )}
+        <FadeIn delay={340} style={{ width: "100%", marginTop: 16 }}>
+          <div style={{ display: "flex", gap: 12 }}>
+            <NavBtn onClick={onBack} variant="ghost" label="← Back" />
+            <NavBtn
+              onClick={handleContinue}
+              variant="primary"
+              label="Continue →"
+              disabled={!canContinue && attempted}
+            />
+          </div>
+        </FadeIn>
 
       </div>
     </div>

@@ -11,12 +11,12 @@ export default function App() {
   const [page, setPage] = useState(0);
 
   const [booking, setBooking] = useState({
-    email: null,
+    fullName: null,
     phone: null,
     rideType: null,   // "public" | "private"
     tripDir: null,   // "drop-off" | "pick-up"
     hostel: null,
-    campus: null,   // "main" | "iperu"
+    campus: null,   // "main" | "iperu" | "off-campus"
     date: null,
     time: null,
     passengers: 1,
@@ -78,7 +78,7 @@ export default function App() {
           booking={booking}
           onRestart={() => {
             setBooking({
-              email: null, phone: null, rideType: null,
+              fullName: null, phone: null, rideType: null,
               tripDir: null, hostel: null, campus: null,
               date: null, time: null, passengers: 1,
               receiptFile: null, bookingId: null, price: null,
