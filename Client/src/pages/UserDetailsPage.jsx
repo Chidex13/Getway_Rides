@@ -126,7 +126,7 @@ export default function UserDetailsPage({ onNext, onBack }) {
               maxLength={50}
             />
             <Field
-              label="Phone Number"
+              label="whatsApp Number"
               hint="WhatsApp number"
               type="tel"
               value={phone}
