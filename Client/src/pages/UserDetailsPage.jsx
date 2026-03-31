@@ -117,7 +117,7 @@ export default function UserDetailsPage({ onNext, onBack }) {
           }}>
             <Field
               label="Full Name"
-              hint="Letters only"
+              hint="Full name only"
               type="text"
               value={fullName}
               onChange={setFullName}
