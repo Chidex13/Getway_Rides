@@ -6,9 +6,9 @@ const BUCKET = "receipts";
  * Upload a receipt file to Supabase Storage.
  * Returns the public URL of the uploaded file.
  */
-export const uploadReceipt = async (file, email) => {
+export const uploadReceipt = async (file, fullName) => {
   const ext      = file.originalname.split(".").pop();
-  const filename = `${email.replace(/[@.]/g, "_")}_${Date.now()}.${ext}`;
+  const filename = `${fullName.replace(/\s+/g, "_")}_${Date.now()}.${ext}`;
 
   const { error } = await supabase.storage
     .from(BUCKET)

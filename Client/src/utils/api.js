@@ -24,9 +24,6 @@ async function request(method, path, body, isFormData = false) {
   return data;
 }
 
-export const sendOtp = (email) => request("POST", "/api/otp/send", { email });
-export const verifyOtp = (email, code) => request("POST", "/api/otp/verify", { email, code });
-
 export const getPrice = (rideType, campus) =>
   request("GET", `/api/pricing?rideType=${rideType}&campus=${campus}`);
 

@@ -3,7 +3,6 @@ import cors     from "cors";
 import dotenv   from "dotenv";
 import multer   from "multer";
 
-import otpRoutes     from "./routes/otp.routes.js";
 import bookingRoutes from "./routes/booking.routes.js";
 import adminRoutes   from "./routes/admin.routes.js";
 
@@ -25,7 +24,6 @@ app.get("/api/health", (_, res) =>
   res.json({ status: "ok", env: process.env.NODE_ENV })
 );
 
-app.use("/api/otp",      otpRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/admin",    adminRoutes);
 
