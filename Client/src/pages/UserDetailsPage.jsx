@@ -17,7 +17,6 @@ export default function UserDetailsPage({ onNext, onBack }) {
     setPhone,
     setCampus,
     saveDetails,
-    clearDetails,
     isLoaded
   } = useUserDetails();
 
@@ -69,15 +68,6 @@ export default function UserDetailsPage({ onNext, onBack }) {
     saveDetails(fullName.trim(), phone.trim(), campus);
 
     onNext({ fullName: fullName.trim(), phone: phone.trim(), campus });
-  };
-
-  const handleClearDetails = () => {
-    if (window.confirm("Clear saved user details? You'll need to enter them again next time.")) {
-      clearDetails();
-      setFullNameLocal("");
-      setPhoneLocal("");
-      setCampusLocal("");
-    }
   };
 
   const pageStyle = {
@@ -155,6 +145,8 @@ export default function UserDetailsPage({ onNext, onBack }) {
             border: "1.5px solid rgba(255,255,255,0.07)",
             borderRadius: 16, padding: 28,
             display: "flex", flexDirection: "column", gap: 20,
+            position: "relative",
+            overflow: "visible"
           }}>
             <Field
               label="Full Name"
@@ -176,6 +168,7 @@ export default function UserDetailsPage({ onNext, onBack }) {
               maxLength={11}
             />
             <CustomSelect
+            style={{ zIndex: 100 }}
               label="Campus"
               value={campus}
               onChange={(v) => { setCampusLocal(v); setCampusError(""); }}
@@ -193,45 +186,17 @@ export default function UserDetailsPage({ onNext, onBack }) {
             }}>
               <span style={{ color: "#64ff8c", fontSize: 13, marginTop: 1, flexShrink: 0 }}>ℹ</span>
               <p style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", lineHeight: 1.6 }}>
-                Your details are saved locally. Click "Clear Details" below to remove them.
+                Your details are saved locally and will automatically clear after 3 days of not visiting.
               </p>
             </div>
-
-            {/* Clear Details Button */}
-            {(fullName || phone || campus) && (
-              <button
-                onClick={handleClearDetails}
-                style={{
-                  width: "100%",
-                  padding: "10px 14px",
-                  background: "rgba(255,77,77,0.08)",
-                  border: "1px solid rgba(255,77,77,0.2)",
-                  borderRadius: 8,
-                  color: "#ff4d4d",
-                  fontSize: 12,
-                  fontFamily: "var(--font-outfit)",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "rgba(255,77,77,0.15)";
-                  e.currentTarget.style.borderColor = "rgba(255,77,77,0.4)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "rgba(255,77,77,0.08)";
-                  e.currentTarget.style.borderColor = "rgba(255,77,77,0.2)";
-                }}
-              >
-                Clear Saved Details
-              </button>
-            )}
           </div>
         </FadeIn>
 
         <FadeIn delay={340} style={{ width: "100%", marginTop: 16 }}>
           <div style={{ display: "flex", gap: 12 }}>
-            <NavBtn onClick={onBack} variant="ghost" label="← Back" />
+            <NavBtn style={{ zIndex: 1 }} onClick={onBack} variant="ghost" label="← Back" />
             <NavBtn
+              style={{ zIndex: 1 }}
               onClick={handleContinue}
               variant="primary"
               label="Continue →"

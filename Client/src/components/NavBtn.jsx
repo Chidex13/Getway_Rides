@@ -39,12 +39,13 @@ export default function NavBtn({ onClick, variant, label, disabled }) {
 
   return (
     <button
+      
       onClick={onClick}
       disabled={disabled}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className={isPrimary ? "t-glow" : "t-ghost"}
-      style={{ ...base, ...(isPrimary ? primary : ghost) }}
+      style={{ ...base, ...(isPrimary ? primary : ghost), transition: "all 0.2s ease" , zIndex: 100 }}
     >
       {label}
     </button>

@@ -42,16 +42,15 @@ export default function CustomSelect({
     onChange(optionVal);
     setOpen(false);
   };
-
+  // style={{ zIndex: 100 }}
   return (
     <div
       ref={containerRef}
       style={{
         display: "flex", flexDirection: "column", gap: 6,
-        position: "relative", width: "100%", zIndex: open ? 9999 : "auto",
+        position: "relative", width: "100%", 
         opacity: disabled ? 0.4 : 1,
         pointerEvents: disabled ? "none" : "auto",
-        overflow: open ? "visible" : "hidden"
       }}
     >
       {/* Label Row */}
@@ -109,7 +108,6 @@ export default function CustomSelect({
           border: "1.5px solid rgba(100,255,140,0.3)",
           borderRadius: 8,
           overflow: "hidden",
-          zIndex: 99999,
           boxShadow: "0 12px 40px rgba(0,0,0,0.6)",
           maxHeight: 220,
           overflowY: "auto"
@@ -136,7 +134,7 @@ export default function CustomSelect({
                   }
                 }}
                 style={{
-                  padding: "11px 16px",
+                  padding: "14px 19px",
                   fontSize: 13,
                   fontFamily: "var(--font-outfit)",
                   color: isSelected ? "#64ff8c" : "#fff",
