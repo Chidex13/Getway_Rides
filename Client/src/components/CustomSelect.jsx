@@ -50,7 +50,8 @@ export default function CustomSelect({
         display: "flex", flexDirection: "column", gap: 6,
         position: "relative", width: "100%", zIndex: open ? 9999 : "auto",
         opacity: disabled ? 0.4 : 1,
-        pointerEvents: disabled ? "none" : "auto"
+        pointerEvents: disabled ? "none" : "auto",
+        overflow: open ? "visible" : "hidden"
       }}
     >
       {/* Label Row */}
@@ -104,12 +105,12 @@ export default function CustomSelect({
           top: "calc(100% + 6px)",
           left: 0,
           right: 0,
-          background: "#161616",
-          border: "1.5px solid rgba(100,255,140,0.2)",
+          background: "#0f0f0f",
+          border: "1.5px solid rgba(100,255,140,0.3)",
           borderRadius: 8,
           overflow: "hidden",
           zIndex: 99999,
-          boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
+          boxShadow: "0 12px 40px rgba(0,0,0,0.6)",
           maxHeight: 220,
           overflowY: "auto"
         }}>

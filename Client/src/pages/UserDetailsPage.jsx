@@ -6,16 +6,37 @@ import CustomSelect from "../components/CustomSelect.jsx";
 import NavBtn from "../components/NavBtn.jsx";
 import { isValidFullName, isValidPhone } from "../utils/validators.js";
 import { CAMPUSES } from "../constants/campuses.js";
-
+import { useUserDetails } from "../hooks/useUserDetails.js";
 
 export default function UserDetailsPage({ onNext, onBack }) {
-  const [fullName, setFullName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [campus, setCampus] = useState("");
+  const {
+    fullName: savedFullName,
+    phone: savedPhone,
+    campus: savedCampus,
+    setFullName,
+    setPhone,
+    setCampus,
+    saveDetails,
+    clearDetails,
+    isLoaded
+  } = useUserDetails();
+
+  const [fullName, setFullNameLocal] = useState("");
+  const [phone, setPhoneLocal] = useState("");
+  const [campus, setCampusLocal] = useState("");
   const [fullNameError, setFullNameError] = useState("");
   const [phoneError, setPhoneError] = useState("");
   const [campusError, setCampusError] = useState("");
   const [attempted, setAttempted] = useState(false);
+
+  // Populate from localStorage once loaded
+  useEffect(() => {
+    if (isLoaded) {
+      setFullNameLocal(savedFullName);
+      setPhoneLocal(savedPhone);
+      setCampusLocal(savedCampus);
+    }
+  }, [isLoaded, savedFullName, savedPhone, savedCampus]);
 
   const canContinue = isValidFullName(fullName) && isValidPhone(phone) && campus;
 
@@ -44,7 +65,19 @@ export default function UserDetailsPage({ onNext, onBack }) {
 
     if (fErr || pErr || cErr) return;
 
+    // Save to localStorage before proceeding
+    saveDetails(fullName.trim(), phone.trim(), campus);
+
     onNext({ fullName: fullName.trim(), phone: phone.trim(), campus });
+  };
+
+  const handleClearDetails = () => {
+    if (window.confirm("Clear saved user details? You'll need to enter them again next time.")) {
+      clearDetails();
+      setFullNameLocal("");
+      setPhoneLocal("");
+      setCampusLocal("");
+    }
   };
 
   const pageStyle = {
@@ -60,6 +93,14 @@ export default function UserDetailsPage({ onNext, onBack }) {
     justifyContent: "center",
     padding: "80px 24px 40px",
   };
+
+  if (!isLoaded) {
+    return (
+      <div style={pageStyle}>
+        <p style={{ color: "#64ff8c" }}>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div style={pageStyle}>
@@ -117,20 +158,19 @@ export default function UserDetailsPage({ onNext, onBack }) {
           }}>
             <Field
               label="Full Name"
-              hint="Full name only"
               type="text"
               value={fullName}
-              onChange={setFullName}
+              onChange={setFullNameLocal}
               error={fullNameError}
-              placeholder="John Doe Smith"
+              placeholder="John Doe"
               maxLength={50}
             />
             <Field
-              label="whatsApp Number"
+              label="Phone Number"
               hint="WhatsApp number"
               type="tel"
               value={phone}
-              onChange={setPhone}
+              onChange={setPhoneLocal}
               error={phoneError}
               placeholder="08012345678"
               maxLength={11}
@@ -138,7 +178,7 @@ export default function UserDetailsPage({ onNext, onBack }) {
             <CustomSelect
               label="Campus"
               value={campus}
-              onChange={(v) => { setCampus(v); setCampusError(""); }}
+              onChange={(v) => { setCampusLocal(v); setCampusError(""); }}
               options={CAMPUSES}
               placeholder="Select your campus"
               error={campusError}
@@ -153,9 +193,38 @@ export default function UserDetailsPage({ onNext, onBack }) {
             }}>
               <span style={{ color: "#64ff8c", fontSize: 13, marginTop: 1, flexShrink: 0 }}>ℹ</span>
               <p style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", lineHeight: 1.6 }}>
-                Please ensure your full name is correct and your phone number is valid.
+                Your details are saved locally. Click "Clear Details" below to remove them.
               </p>
             </div>
+
+            {/* Clear Details Button */}
+            {(fullName || phone || campus) && (
+              <button
+                onClick={handleClearDetails}
+                style={{
+                  width: "100%",
+                  padding: "10px 14px",
+                  background: "rgba(255,77,77,0.08)",
+                  border: "1px solid rgba(255,77,77,0.2)",
+                  borderRadius: 8,
+                  color: "#ff4d4d",
+                  fontSize: 12,
+                  fontFamily: "var(--font-outfit)",
+                  cursor: "pointer",
+                  transition: "all 0.2s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "rgba(255,77,77,0.15)";
+                  e.currentTarget.style.borderColor = "rgba(255,77,77,0.4)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "rgba(255,77,77,0.08)";
+                  e.currentTarget.style.borderColor = "rgba(255,77,77,0.2)";
+                }}
+              >
+                Clear Saved Details
+              </button>
+            )}
           </div>
         </FadeIn>
 

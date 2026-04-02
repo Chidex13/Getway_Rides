@@ -30,7 +30,7 @@ export default function Field({
         {hint && (
           <span style={{
             fontSize: 10,
-            color: hintColor || "rgba(255,255,255,0.22)",
+            color: hintColor || "rgb(163, 51, 51, 0.8)",
             fontFamily: "var(--font-mono)",
           }}>
             {hint}
