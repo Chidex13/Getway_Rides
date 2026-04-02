@@ -3,7 +3,7 @@ import FadeIn from "../components/FadeIn.jsx";
 import { useState, useEffect } from "react";
 import { getBookingStatus } from "../utils/api.js";
 
-// inside the component add:
+
 
 export default function WelcomePage({ onNext }) {
   const [hovered, setHovered] = useState(false);

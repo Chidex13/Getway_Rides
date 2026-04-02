@@ -13,9 +13,6 @@ export default function UserDetailsPage({ onNext, onBack }) {
     fullName: savedFullName,
     phone: savedPhone,
     campus: savedCampus,
-    setFullName,
-    setPhone,
-    setCampus,
     saveDetails,
     isLoaded
   } = useUserDetails();
@@ -48,7 +45,10 @@ export default function UserDetailsPage({ onNext, onBack }) {
     setPhoneError(
       isValidPhone(phone) ? "" : "Enter a valid Nigerian number — e.g. 08012345678"
     );
-  }, [fullName, phone, attempted]);
+    setCampusError(
+      campus ? "" : "Please select your campus"
+    );
+  }, [fullName, phone, campus, attempted]);
 
   const handleContinue = () => {
     setAttempted(true);
@@ -171,7 +171,7 @@ export default function UserDetailsPage({ onNext, onBack }) {
             <CustomSelect
               label="Campus"
               value={campus}
-              onChange={(v) => { setCampusLocal(v); setCampusError(""); }}
+              onChange={setCampusLocal}
               options={CAMPUSES}
               placeholder="Select your campus"
               error={campusError}

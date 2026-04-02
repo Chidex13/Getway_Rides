@@ -3,6 +3,7 @@ import html2canvas from "html2canvas";
 import FadeIn from "../components/FadeIn.jsx";
 import { formatDate, formatTime } from "../utils/formatters.js";
 import { formatPrice } from "../utils/pricing.js";
+import { DRIVER_CONTACTS } from "../constants/contact.js";
 
 function ReceiptRow({ label, value }) {
   return (
@@ -241,7 +242,7 @@ export default function FinalizePage({ booking, onRestart }) {
                     color: "#fff", fontFamily: "var(--font-mono)",
                     letterSpacing: "0.05em"
                   }}>
-                    07019624022
+                    {DRIVER_CONTACTS.line1}
                   </span>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -256,7 +257,7 @@ export default function FinalizePage({ booking, onRestart }) {
                     color: "#fff", fontFamily: "var(--font-mono)",
                     letterSpacing: "0.05em"
                   }}>
-                    0704 774 9171
+                    {DRIVER_CONTACTS.line2}
                   </span>
                 </div>
               </div>

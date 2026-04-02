@@ -1,5 +1,4 @@
-export const isValidBabcockEmail = (email) =>
-  /^[a-zA-Z0-9._%+\-]+@student\.babcock\.edu\.ng$/.test(email?.trim() ?? "");
+
 
 export const isValidFullName = (fullName) => {
   const trimmed = fullName?.trim() ?? "";
