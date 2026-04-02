@@ -42,7 +42,7 @@ export default function CustomSelect({
     onChange(optionVal);
     setOpen(false);
   };
-  // style={{ zIndex: 100 }}
+
   return (
     <div
       ref={containerRef}
@@ -84,6 +84,8 @@ export default function CustomSelect({
           fontFamily: "var(--font-outfit)",
           cursor: disabled ? "not-allowed" : "pointer",
           transition: "border-color 0.3s ease",
+          position: "relative",
+          zIndex: 10
         }}
       >
         <span>{displayValue}</span>
@@ -101,14 +103,15 @@ export default function CustomSelect({
       {open && (
         <div style={{
           position: "absolute",
+          zIndex: 1000, // HIGH z-index to appear above everything
           top: "calc(100% + 6px)",
           left: 0,
           right: 0,
-          background: "#0f0f0f",
+          background: "#0d0d0c",
           border: "1.5px solid rgba(100,255,140,0.3)",
           borderRadius: 8,
           overflow: "hidden",
-          boxShadow: "0 12px 40px rgba(0,0,0,0.6)",
+          boxShadow: "0 12px 40px rgba(0,0,0,0.25)",
           maxHeight: 220,
           overflowY: "auto"
         }}>

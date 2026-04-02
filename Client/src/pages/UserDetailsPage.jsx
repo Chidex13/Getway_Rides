@@ -139,14 +139,15 @@ export default function UserDetailsPage({ onNext, onBack }) {
           </p>
         </FadeIn>
 
-        <FadeIn delay={240} style={{ width: "100%" }}>
+        {/* FORM CONTAINER - Keep this as one unit */}
+        <FadeIn delay={240} style={{ width: "100%", position: "relative", zIndex: 10 }}>
           <div style={{
             background: "#111",
             border: "1.5px solid rgba(255,255,255,0.07)",
             borderRadius: 16, padding: 28,
             display: "flex", flexDirection: "column", gap: 20,
             position: "relative",
-            overflow: "visible"
+            overflow: "visible" // IMPORTANT: allows dropdown to overflow
           }}>
             <Field
               label="Full Name"
@@ -168,7 +169,6 @@ export default function UserDetailsPage({ onNext, onBack }) {
               maxLength={11}
             />
             <CustomSelect
-            style={{ zIndex: 100 }}
               label="Campus"
               value={campus}
               onChange={(v) => { setCampusLocal(v); setCampusError(""); }}
@@ -192,11 +192,11 @@ export default function UserDetailsPage({ onNext, onBack }) {
           </div>
         </FadeIn>
 
+        {/* BUTTONS BELOW - NO z-index */}
         <FadeIn delay={340} style={{ width: "100%", marginTop: 16 }}>
           <div style={{ display: "flex", gap: 12 }}>
-            <NavBtn style={{ zIndex: 1 }} onClick={onBack} variant="ghost" label="← Back" />
+            <NavBtn onClick={onBack} variant="ghost" label="← Back" />
             <NavBtn
-              style={{ zIndex: 1 }}
               onClick={handleContinue}
               variant="primary"
               label="Continue →"
