@@ -74,7 +74,7 @@ export default function CustomSelect({
         onClick={() => !disabled && setOpen((prev) => !prev)}
         style={{
           width: "100%",
-          background: "rgba(255,255,255,0.04)",
+          background: "rgba(255,255,255)",
           border: `1.5px solid ${borderColor}`,
           borderRadius: 8,
           padding: "13px 16px",
