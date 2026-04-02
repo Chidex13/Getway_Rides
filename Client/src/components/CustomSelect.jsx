@@ -104,11 +104,11 @@ export default function CustomSelect({
           top: "calc(100% + 6px)",
           left: 0,
           right: 0,
-          background: "#000000",
+          background: "#161616",
           border: "1.5px solid rgba(100,255,140,0.2)",
           borderRadius: 8,
           overflow: "hidden",
-          zIndex: 50,
+          zIndex: 100,
           boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
           maxHeight: 220,
           overflowY: "auto"
