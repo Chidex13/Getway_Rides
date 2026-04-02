@@ -48,7 +48,7 @@ export default function CustomSelect({
       ref={containerRef}
       style={{
         display: "flex", flexDirection: "column", gap: 6,
-        position: "relative", width: "100%",
+        position: "relative", width: "100%", zIndex: open ? 9999 : "auto",
         opacity: disabled ? 0.4 : 1,
         pointerEvents: disabled ? "none" : "auto"
       }}
@@ -108,7 +108,7 @@ export default function CustomSelect({
           border: "1.5px solid rgba(100,255,140,0.2)",
           borderRadius: 8,
           overflow: "hidden",
-          zIndex: 100,
+          zIndex: 99999,
           boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
           maxHeight: 220,
           overflowY: "auto"
