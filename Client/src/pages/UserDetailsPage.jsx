@@ -178,15 +178,15 @@ export default function UserDetailsPage({ onNext, onBack }) {
             />
 
             <div style={{
-              display: "flex", alignItems: "flex-start", gap: 10,
+              display: "flex", justifyContent: "center", alignItems: "center", gap: 10,
               padding: "11px 14px",
-              background: "rgba(100,255,140,0.04)",
-              border: "1px solid rgba(100,255,140,0.1)",
+              background: "rgba(255,77,77,0.05)",
+              border: "1px solid rgba(255,77,77,0.15)",
               borderRadius: 8,
             }}>
-              <span style={{ color: "#64ff8c", fontSize: 13, marginTop: 1, flexShrink: 0 }}>ℹ</span>
-              <p style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", lineHeight: 1.6 }}>
-                Your details are saved locally and will automatically clear after 3 days of not visiting.
+              <span style={{ color: "#ff4d4d", fontSize: 13, marginTop: 1, flexShrink: 0 }}>⚠</span>
+              <p style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", lineHeight: 1.6, fontFamily: "var(--font-outfit)" }}>
+                All Details must be correct to avoid any issues.
               </p>
             </div>
           </div>

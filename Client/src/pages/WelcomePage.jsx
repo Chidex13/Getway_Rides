@@ -1,8 +1,8 @@
 import FadeIn from "../components/FadeIn.jsx";
-
 import { useState, useEffect } from "react";
 import { getBookingStatus } from "../utils/api.js";
-
+import { DRIVER_CONTACTS } from "../constants/contact.js";
+import { Phone } from "lucide-react";
 
 
 export default function WelcomePage({ onNext }) {
@@ -92,35 +92,35 @@ export default function WelcomePage({ onNext }) {
         width: "100%",
       }}>
 
-      <div style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 6,
-        borderRadius: 9999,
-        padding: "8px 16px",
-        fontSize: 12,
+        <div style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 6,
+          borderRadius: 9999,
+          padding: "8px 16px",
+          fontSize: 12,
 
-        textTransform: "uppercase",
-        letterSpacing: "0.12em",
-        fontFamily: "var(--font-mono)",
-        background: bookingOpen ? "rgba(100,255,140,0.08)" : "rgba(255,77,77,0.08)",
-        border: `1px solid ${bookingOpen ? "rgba(100,255,140,0.2)" : "rgba(255,77,77,0.2)"}`,
-        color: bookingOpen ? "#64ff8c" : "#ff4d4d",
-        lineHeight: 1,
-        whiteSpace: "nowrap",
-        marginBottom: 16,
+          textTransform: "uppercase",
+          letterSpacing: "0.12em",
+          fontFamily: "var(--font-mono)",
+          background: bookingOpen ? "rgba(100,255,140,0.08)" : "rgba(255,77,77,0.08)",
+          border: `1px solid ${bookingOpen ? "rgba(100,255,140,0.2)" : "rgba(255,77,77,0.2)"}`,
+          color: bookingOpen ? "#64ff8c" : "#ff4d4d",
+          lineHeight: 1,
+          whiteSpace: "nowrap",
+          marginBottom: 16,
         }}>
-        <span style={{
-          display: "inline-block",
-          width: 8, height: 8,
-          borderRadius: "50%",
-          background: bookingOpen ? "#64ff8c" : "#ff4d4d",
-          flexShrink: 0,
-          opacity: bookingOpen ? (dot ? 1 : 0.15) : 1,
-          transition: "opacity 0.4s",
-        }} />
-        {statusLoading ? "Checking..." : bookingOpen ? "Booking Open" : "Booking Closed"}
-      </div>
+          <span style={{
+            display: "inline-block",
+            width: 8, height: 8,
+            borderRadius: "50%",
+            background: bookingOpen ? "#64ff8c" : "#ff4d4d",
+            flexShrink: 0,
+            opacity: bookingOpen ? (dot ? 1 : 0.15) : 1,
+            transition: "opacity 0.4s",
+          }} />
+          {statusLoading ? "Checking..." : bookingOpen ? "Booking Open" : "Booking Closed"}
+        </div>
 
         <FadeIn delay={200} style={{ display: "flex", justifyContent: "center" }}>
           <p style={{
@@ -193,7 +193,7 @@ export default function WelcomePage({ onNext }) {
               opacity: bookingOpen ? 1 : 0.4,
               cursor: bookingOpen ? "pointer" : "not-allowed",
             }}
-            >
+          >
             {bookingOpen ? "Book a Ride →" : "Bookings Closed"}
           </button>
         </FadeIn>
@@ -212,6 +212,23 @@ export default function WelcomePage({ onNext }) {
             <span>BABCOCK UNIVERSITY</span>
             <span style={{ color: "#2a2a2a" }}>———</span>
             <span style={{ color: "#ffb830" }}>✈ GATEWAY AIRPORT</span>
+          </div>
+        </FadeIn>
+
+        <FadeIn delay={780}>
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            marginTop: 20,
+            fontSize: 13,
+            fontWeight: 600,
+            fontFamily: "var(--font-mono)",
+            color: "#ffb730d2",
+            letterSpacing: "0.05em",
+          }}>
+            <Phone size={16} strokeWidth={2.5} color="#d71d1dd9" />
+            <span>{DRIVER_CONTACTS.line1}, {DRIVER_CONTACTS.line2}</span>
           </div>
         </FadeIn>
 
