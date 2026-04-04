@@ -274,18 +274,21 @@ export default function FinalizePage({ booking, onRestart }) {
           </div>
         </FadeIn>
 
-        <FadeIn delay={420} style={{ width: "100%", textAlign: "center" }}>
-          <p style={{
-            fontSize: 13,
-            color: "#ff4d4d",
-            fontFamily: "var(--font-outfit)",
-            lineHeight: 1.6,
-            padding: "0 8px",
-            marginBottom: 4,
+        <FadeIn delay={420} style={{ width: "100%" }}>
+          <div style={{
+            display: "flex", justifyContent: "center", alignItems: "center", gap: 10,
+            padding: "11px 14px",
+            background: "rgba(255,77,77,0.05)",
+            border: "1px solid rgba(255,77,77,0.15)",
+            borderRadius: 8,
+            marginBottom: 16,
           }}>
-            ⚠ Your booking is pending driver confirmation.
-            You will be contacted if there are any issues.
-          </p>
+            <span style={{ color: "#ff4d4d", fontSize: 13, marginTop: 1, flexShrink: 0 }}>⚠</span>
+            <p style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", lineHeight: 1.6, fontFamily: "var(--font-outfit)", textAlign: "left", margin: 0 }}>
+              Your booking is pending driver confirmation.
+              You will be contacted if there are any issues.
+            </p>
+          </div>
         </FadeIn>
 
         {/* Action buttons */}
