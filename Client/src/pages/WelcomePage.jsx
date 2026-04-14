@@ -62,6 +62,7 @@ export default function WelcomePage({ onNext }) {
         GETWAY RIDES
       </div>
 
+      {/* Content */}
       <div style={{
         position: "relative",
         zIndex: 2,
