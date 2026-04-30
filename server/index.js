@@ -24,6 +24,10 @@ app.get("/api/health", (_, res) =>
   res.json({ status: "ok", env: process.env.NODE_ENV })
 );
 
+// app.get('/health', (req, res) => {
+//   res.json({ status: 'ok', message: 'Getway Rides backend is running' });
+// });
+
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/admin",    adminRoutes);
 
